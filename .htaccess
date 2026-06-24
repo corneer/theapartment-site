@@ -1,0 +1,18 @@
+# the Apartment — static site (Oderland / LiteSpeed)
+
+DirectoryIndex index.html
+ErrorDocument 404 /404.html
+
+# Clean URLs: serve /projects/volvo-cars from projects/volvo-cars.html
+RewriteEngine On
+RewriteBase /
+
+# If someone requests the .html explicitly, redirect to the clean URL
+RewriteCond %{THE_REQUEST} \s/+([^?\s]+)\.html[\s?] [NC]
+RewriteRule ^ /%1 [R=301,L]
+
+# Internally serve the .html file for the extensionless URL
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteCond %{REQUEST_FILENAME}\.html -f
+RewriteRule ^(.+?)/?$ $1.html [L]
