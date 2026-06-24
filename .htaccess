@@ -3,9 +3,15 @@
 DirectoryIndex index.html
 ErrorDocument 404 /404.html
 
-# Clean URLs: serve /projects/volvo-cars from projects/volvo-cars.html
 RewriteEngine On
 RewriteBase /
+
+# Canonical: force HTTPS and non-www (everyone lands on https://theapartment.se)
+RewriteCond %{HTTPS} off [OR]
+RewriteCond %{HTTP_HOST} ^www\. [NC]
+RewriteRule ^ https://theapartment.se%{REQUEST_URI} [R=301,L]
+
+# Clean URLs: serve /projects/volvo-cars from projects/volvo-cars.html
 
 # If someone requests the .html explicitly, redirect to the clean URL
 RewriteCond %{THE_REQUEST} \s/+([^?\s]+)\.html[\s?] [NC]
